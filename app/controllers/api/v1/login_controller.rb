@@ -3,8 +3,8 @@ class Api::V1::LoginController < Api::V1::BaseController
 
   def wechat_params
     {
-      appid: "#{Figaro.env.APP_ID}",
-      secret: "#{Figaro.env.APP_SECRET}",
+      appid: ENV['APP_ID'],
+      secret: ENV['APP_SECRET'],
       js_code: params[:code],
       grant_type: "authorization_code"
     }
