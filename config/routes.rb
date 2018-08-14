@@ -15,6 +15,7 @@ Rails.application.routes.draw do
           get :accepted
           get :completed
         end
+      end
       resources :users, only: [:update]
     end
   end
