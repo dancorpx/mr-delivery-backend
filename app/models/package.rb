@@ -5,7 +5,7 @@ class Package < ApplicationRecord
   validates :customer_id, presence: true
   validates :name_on_package, presence: true
   validates :phone_on_package, presence: true
-  validates :kaui_di_code, uniqueness: true
+  validates :kuai_di_code, uniqueness: true
   validates :size, presence: true, inclusion: { in: ["Small", "Medium", "Large"]}
   validates :delivery_location_name, presence: true
   validates :delivery_location_lat, presence: true

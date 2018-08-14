@@ -1,0 +1,77 @@
+class Api::V1::PackagesController < Api::V1::BaseController
+  before_action :set_package, only: [:show, :update, :destroy]
+
+  def index
+    if params[:customer_id].present?
+      @packages = Package.where(customer_id: params[:customer_id])
+    else
+       @packages = Package.all
+    end
+  end
+
+  def available
+    if params[:customer_id].present?
+      @packages = Package.where(customer_id: params[:customer_id], available: true)
+    else
+       @packages = Package.where(available: true)
+    end
+  end
+
+  def accepted
+    if params[:customer_id].present?
+      @packages = Package.where(customer_id: params[:customer_id], accepted: true)
+    else
+       @packages = Package.where(accepted: true)
+    end
+  end
+
+  def completed
+    if params[:customer_id].present?
+      @packages = Package.where(customer_id: params[:customer_id], completed: true)
+    else
+       @packages = Package.where(completed: true)
+    end
+  end
+
+
+  def show
+  end
+
+  def update
+    if @package.update(package_params)
+      render :show
+    else
+      render_error
+    end
+  end
+
+  def create
+    @package = Package.new(package_params)
+    # @package.seller = User.find(params[:seller_id])
+    if @package.save
+      render :show, status: :created
+    else
+      render_error
+    end
+  end
+
+  def destroy
+    @package.destroy
+    head :no_content
+  end
+
+  private
+
+  def set_package
+    @package = Package.find(params[:id])
+  end
+
+  def package_params
+    params.require(:package).permit(:id, :customer_id, :name_on_package,
+                                    :phone_on_package, :kuai_di_code, :size,
+                                    :category, :price, :delivery_location_name,
+                                    :delivery_location_lat,:delivery_location_lng,
+                                    :delivery_time_start, :delivery_time_end, :comment,
+                                    :available,:accepted, :completed, :verification_code)
+  end
+end
