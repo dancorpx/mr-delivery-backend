@@ -1,0 +1,5 @@
+class AddCommentToPackages < ActiveRecord::Migration[5.2]
+  def change
+    add_column :packages, :comment, :string
+  end
+end
