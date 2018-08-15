@@ -48,6 +48,7 @@ class Api::V1::PackagesController < Api::V1::BaseController
   def create
     @package = Package.new(package_params)
     # @package.seller = User.find(params[:seller_id])
+    @package.verification_code = random_verification_code
     if @package.save
       render :show, status: :created
     else
@@ -69,9 +70,13 @@ class Api::V1::PackagesController < Api::V1::BaseController
   def package_params
     params.require(:package).permit(:id, :customer_id, :name_on_package,
                                     :phone_on_package, :kuai_di_code, :size,
-                                    :category, :price, :delivery_location_name,
-                                    :delivery_location_lat,:delivery_location_lng,
+                                    :price, :delivery_location_name,
+                                    :delivery_location_lat, :delivery_location_lng,
                                     :delivery_time_start, :delivery_time_end, :comment,
-                                    :available,:accepted, :completed, :verification_code)
+                                    :available, :accepted, :completed, :verification_code)
+  end
+
+  def random_verification_code
+    (('a'..'z').to_a + (0..9).to_a).sample(4).join
   end
 end

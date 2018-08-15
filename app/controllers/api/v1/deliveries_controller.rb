@@ -11,7 +11,7 @@ class Api::V1::DeliveriesController < Api::V1::BaseController
 
   def accepted
     if params[:worker_id].present?
-      @deliveries = Delivery.where(worker_id: params[:worker_id]).select{ |delivery| delivery.package.accepted
+      @deliveries = Delivery.where(worker_id: params[:worker_id]).select{ |delivery| delivery.package.accepted }
     else
        @deliveries = Delivery.all.select{ |delivery| delivery.package.accepted}
     end
