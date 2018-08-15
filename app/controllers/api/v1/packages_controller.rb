@@ -12,8 +12,10 @@ class Api::V1::PackagesController < Api::V1::BaseController
   def available
     if params[:customer_id].present?
       @packages = Package.where(customer_id: params[:customer_id], available: true)
+      @packages = @packages.select{ |package| time_valid(package.delivery_time_end) }
     else
        @packages = Package.where(available: true)
+       @packages = @packages.select{ |package| time_valid(package.delivery_time_end) }
     end
   end
 
@@ -78,5 +80,11 @@ class Api::V1::PackagesController < Api::V1::BaseController
 
   def random_verification_code
     (('a'..'z').to_a + (0..9).to_a).sample(4).join
+  end
+
+  def time_valid(string)
+    t = Time.now.strftime("%H:%M").tr(':', '').to_i
+    string = string.tr(':', '').to_i
+    t < string
   end
 end
