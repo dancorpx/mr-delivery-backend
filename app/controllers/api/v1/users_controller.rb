@@ -12,7 +12,7 @@ class Api::V1::UsersController < Api::V1::BaseController
   private
 
    def user_params
-    params.require(:user).permit(:id, :name, :student_number, :phone_number, :address_name, :address_lat, :address_lng, :static_pay_qr, :photo, :created_at, :updated_at)
+    params.require(:user).permit(:id, :name, :student_number, :phone_number, :address_name, :address_lat, :address_lng, :static_pay_qr, :photo, :avatar, :created_at, :updated_at)
   end
 
   def render_error

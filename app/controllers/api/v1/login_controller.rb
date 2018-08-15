@@ -26,7 +26,8 @@ class Api::V1::LoginController < Api::V1::BaseController
       userAddressLat: @user.address_lat,
       userAddressLng: @user.address_lng,
       userQR: @user.static_pay_qr,
-      userPhoto: @user.photo
+      userPhoto: @user.photo,
+      userAvatar: @user.avatar
     }
   end
 end
