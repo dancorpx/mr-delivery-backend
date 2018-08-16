@@ -78,6 +78,10 @@ class Api::V1::PackagesController < Api::V1::BaseController
                                     :available, :accepted, :completed, :verification_code)
   end
 
+  def render_error
+    render json: { errors: @package.errors.full_messages }, status: :unprocessable_entity
+  end
+
   def random_verification_code
     (('a'..'z').to_a + (0..9).to_a).sample(4).join
   end
