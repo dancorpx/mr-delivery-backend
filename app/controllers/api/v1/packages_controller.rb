@@ -41,15 +41,29 @@ class Api::V1::PackagesController < Api::V1::BaseController
 
   def update
     if @package.update(package_params)
+      if @package.accepted
+        response = RestClient.post('https://yunpian.com/v1/sms/send.json',
+          {
+            apikey: ENV['SMS_KEY'],
+            mobile: "#{@package.customer.phone_number}",
+            text: "【包裹同学】您的验证码: #{@package.verification_code}
+                      请给你的同学确认包裹!
+                      打电话: #{@package.worker.phone_number}"
+          }
+        )
+        p JSON.parse(response)
+      else
+      end
       render :show
     else
       render_error
     end
+
+
   end
 
   def create
     @package = Package.new(package_params)
-    # @package.seller = User.find(params[:seller_id])
     @package.verification_code = random_verification_code
     if @package.save
       render :show, status: :created

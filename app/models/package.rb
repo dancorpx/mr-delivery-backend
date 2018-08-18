@@ -1,6 +1,7 @@
 class Package < ApplicationRecord
   belongs_to :customer, class_name: "User", foreign_key: "customer_id"
   has_one :delivery
+  has_one :worker, through: :delivery
 
   validates :customer_id, presence: true
   validates :name_on_package, presence: true
