@@ -5,5 +5,6 @@ json.extract! @package, :id, :customer_id, :name_on_package, :phone_on_package, 
         json.null!
       else
         json.delivery @package.delivery, :id, :package_id, :worker_id, :created_at, :updated_at
+        json.worker @package.worker, :id, :name, :student_number, :phone_number, :address_name, :address_lat, :address_lng, :static_pay_qr, :photo, :avatar, :created_at, :updated_at
       end
     end
