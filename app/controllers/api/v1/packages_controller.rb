@@ -49,7 +49,7 @@ class Api::V1::PackagesController < Api::V1::BaseController
             text: "【包裹同学】您的验证码: #{@package.verification_code}
             请给你的同学确认包裹!
             打电话: #{@package.worker.phone_number}"
-          }
+          }, content_type: 'application/x-www-form-urlencoded'
         )
         p JSON.parse(response)
       else
