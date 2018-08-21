@@ -45,10 +45,10 @@ class Api::V1::PackagesController < Api::V1::BaseController
         response = RestClient.post('https://sms.yunpian.com/v2/sms/single_send.json',
           {
             apikey: ENV['SMS_KEY'],
-            mobile: "#{@package.customer.phone_number}",
-            text: "【包裹同学】您的验证码: #{@package.verification_code}
+            mobile: '#{@package.customer.phone_number}',
+            text: '【包裹同学】您的验证码: #{@package.verification_code}
             请给你的同学确认包裹!
-            打电话: #{@package.worker.phone_number}"
+            打电话: #{@package.worker.phone_number}'
           }, content_type: 'application/x-www-form-urlencoded'
         )
         p JSON.parse(response)
