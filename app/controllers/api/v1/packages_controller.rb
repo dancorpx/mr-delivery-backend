@@ -42,14 +42,15 @@ class Api::V1::PackagesController < Api::V1::BaseController
   def update
     if @package.update(package_params)
       if @package.accepted
-        response = RestClient.post('https://sms.yunpian.com/v2/sms/single_send.json',
-          {
+        params = {
             apikey: ENV['SMS_KEY'],
             mobile: '#{@package.customer.phone_number}',
             text: '您的验证码: #{@package.verification_code}
             请给你的同学确认包裹!
             打电话: 进入小程序'
-          }, content_type: 'application/x-www-form-urlencoded;charset=utf-8;', accept: 'application/json;charset=utf-8;'
+          }
+        response = RestClient.post('https://sms.yunpian.com/v2/sms/single_send.json', params,
+          content_type: 'application/x-www-form-urlencoded;charset=utf-8;', accept: 'application/json;charset=utf-8;'
         )
         p JSON.parse(response)
       else
