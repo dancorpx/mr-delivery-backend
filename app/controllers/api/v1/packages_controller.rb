@@ -1,3 +1,6 @@
+require 'uri'
+require 'net/http'
+
 class Api::V1::PackagesController < Api::V1::BaseController
   before_action :set_package, only: [:show, :update, :destroy]
 
@@ -43,19 +46,33 @@ class Api::V1::PackagesController < Api::V1::BaseController
     if @package.update(package_params)
 
       if @package.accepted
-        # params = {
-        #     apikey: ENV['SMS_KEY'],
-        #     mobile: '#{@package.customer.phone_number}',
-        #     text: '您的验证码: #{@package.verification_code}
-        #     请给你的同学确认包裹!
-        #     打电话: 进入小程序'
-        #   }
+        # # params = {
+        # #     apikey: ENV['SMS_KEY'],
+        # #     mobile: '#{@package.customer.phone_number}',
+        # #     text: '您的验证码: #{@package.verification_code}
+        # #     请给你的同学确认包裹!
+        # #     打电话: 进入小程序'
+        # #   }
 
-        params = "apikey=#{ENV['SMS_KEY']}&mobile=#{@package.customer.phone_number}&text=您的验证码: #{@package.verification_code} 请给你的同学确认包裹! 打电话: 进入小程序"
+        # params = "apikey=#{ENV['SMS_KEY']}&mobile=#{@package.customer.phone_number}&text=您的验证码: #{@package.verification_code} 请给你的同学确认包裹! 打电话: 进入小程序"
 
-        response = RestClient.post('https://sms.yunpian.com/v2/sms/single_send.json', params,
-          content_type: 'application/x-www-form-urlencoded;charset=utf-8;', accept: 'application/json;charset=utf-8;'
-        )
+        # response = RestClient.post('https://sms.yunpian.com/v2/sms/single_send.json', params,
+        #   content_type: 'application/x-www-form-urlencoded;charset=utf-8;', accept: 'application/json;charset=utf-8;'
+        # )
+        # puts "////////////"
+        # p JSON.parse(response)
+        params = {}
+        send_sms_uri = URI.parse('https://sms.yunpian.com/v2/sms/single_send.json')
+        apikey = ENV['SMS_KEY']
+        mobile = "#{@package.customer.phone_number}"
+        text = "包裹运送中！！！\n您的验证码: #{@package.verification_code}\n请给你的同学确认包裹!\n"
+
+        params['apikey'] = apikey
+        params['mobile'] = mobile
+        params['text'] = text
+        response = Net::HTTP.post_form(send_sms_uri,params)
+        print response.body + "nnnnnnnnnnnnnnnnnnnn"
+        # 进入小程序
       else
       end
       render :show
